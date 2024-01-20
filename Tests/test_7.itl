@@ -1,0 +1,8 @@
+let x = 10;
+let y = 5;
+if((x + y) == 15){
+    exit(x)
+    println("also got here")
+}
+println("got here")
+exit(0)

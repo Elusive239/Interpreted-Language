@@ -1,0 +1,15 @@
+C:\Users\noir\Desktop\ITLang\bin\Debug\net7.0\ITLang.exe
+C:\Users\noir\Desktop\ITLang\bin\Debug\net7.0\ITLang.deps.json
+C:\Users\noir\Desktop\ITLang\bin\Debug\net7.0\ITLang.runtimeconfig.json
+C:\Users\noir\Desktop\ITLang\bin\Debug\net7.0\ITLang.dll
+C:\Users\noir\Desktop\ITLang\bin\Debug\net7.0\ITLang.pdb
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\ITLang.csproj.AssemblyReference.cache
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\ITLang.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\ITLang.AssemblyInfoInputs.cache
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\ITLang.AssemblyInfo.cs
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\ITLang.csproj.CoreCompileInputs.cache
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\ITLang.dll
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\refint\ITLang.dll
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\ITLang.pdb
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\ITLang.genruntimeconfig.cache
+C:\Users\noir\Desktop\ITLang\obj\Debug\net7.0\ref\ITLang.dll

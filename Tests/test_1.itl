@@ -1,0 +1,12 @@
+println("Hello World!")
+
+let x = 0;
+println(x)
+x = 10
+println(x)
+
+let y = x + 2 * 5 / 3;
+println(y)
+
+println(x, y)
+println(x + y)

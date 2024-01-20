@@ -1,0 +1,9 @@
+let x = 8 >= 10;
+let y = 10 > 8;
+let z = 11 == 5;
+let q = 5 == 5;
+
+println(x)
+println(y)
+println(z)
+println(q)

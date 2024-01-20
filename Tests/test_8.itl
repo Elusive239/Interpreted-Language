@@ -1,0 +1,32 @@
+func Expect(val, actual){
+    println("Expected: ", val, ", Got: ", actual)
+}
+
+func Div(){
+    println("===========================")
+}
+
+#test for just true or false
+Div()
+Expect("true", true)
+Expect("false", false)
+
+#Test boolean operators on bools
+Div()
+Expect("true", (true && true))
+Expect("false", (true && false))
+Expect("true", (true || false))
+
+#test for numeric operators
+Div()
+Expect("true", 5 == 5) 
+Expect("false", 4 == 5) 
+Expect("true", 4 <= 5) 
+Expect("false", 5 < 5) 
+Expect("true", 6 >= 5) 
+Expect("true", 6 > 5) 
+
+#test for strings:
+Div()
+Expect("true", "Run" == "Run")
+Expect("false", "true" == "True")

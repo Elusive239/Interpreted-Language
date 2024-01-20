@@ -1,0 +1,9 @@
+func hello (name){
+    let hi = "Hello";
+    println(hi, name, "!")
+    0
+}
+
+hello("Tom")
+hello("John")
+hello('Ben')

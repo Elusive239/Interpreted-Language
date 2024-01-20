@@ -1,0 +1,8 @@
+func createAdder (offset){
+    func add(x, y){
+        x + y + offset
+    }
+}
+
+let y = createAdder(7);
+println(y(3, 0))

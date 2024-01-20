@@ -1,0 +1,59 @@
+func timeInNiceFormat (){
+    let x = time();
+    let y;
+    if(x.hour >= 12){
+        y = "pm"
+    }else{
+        y = "am"
+    }
+    
+    if(x.minute == 25){
+        y = "ITS WORKING"
+        0
+    } else{
+        y = "NOT 25"
+        32
+    }
+
+    let n = 0;
+    if(n == 1){
+        n = 0
+    }elif(n == 0){
+        n = 10
+        if(n == 10){
+            n = 350
+        }
+    }else{
+        n = 32
+    }
+
+    if((x.hour - 12) > 0){
+        println("Time: ", x.hour - 12, ":", x.minute, ":", x.second, " ", y)
+    }else{
+        println("Time: ", x.hour, ":", x.minute, ":", x.second, " ", y)
+    }
+    
+    println("\n", n, "\n")
+    0
+}
+timeInNiceFormat()
+
+func build (){
+    let obj = {
+        x: 100,
+        y: 32,
+        complex: {
+            bar: true,
+        },
+    };
+    obj
+}
+
+let alpha = build();
+println(alpha.x, " ", alpha.y, " ", alpha.complex)
+
+println("Hello!")
+let obj = { x: 10, };
+println(obj)
+println(obj.x)
+println((true && true))

@@ -1,0 +1,9 @@
+#this is a comment!
+
+
+func pie (){  #this function returns 3.14!
+    let x = 3.14;
+}
+
+#then we print pie!
+println(pie())

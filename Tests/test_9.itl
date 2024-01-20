@@ -1,0 +1,31 @@
+func Expect(val, actual){
+    println("Expected: ", val, ", Got: ", actual)
+}
+
+func Div(){
+    println("===========================")
+}
+
+Div()
+let x = 0;
+Expect("0", x)
+Expect("1", x++)
+Expect("0", x--)
+println(x)
+
+#TIME TO IMPLEMENT WHILE LOOP
+#to implement a while loop, we need to do two things:
+    #we need to evaluate the boolean expression in the while loop
+    #then execute each stmt in the body of the loop, until the expression is false.
+while(x < 10){
+    print(x)
+    x++
+}
+
+#TIME TO IMPLEMENT FOR LOOP
+#so we need two new environments when parsing a for loop:
+    #we need a environment for just whats in the ()
+        #this environment will declare a variable (let x = 0, etc),
+        #and then we evaluate a boolean expression,
+        #then evaluate a unary opertion at the end for the {}
+    #and we need an environment for every variable defined in the for loops {}
