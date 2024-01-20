@@ -1,4 +1,4 @@
-﻿//#define DEBUG
+﻿#define DEBUG
 
 using ITLang.Frontend;
 using ITLang.Runtime;
@@ -8,6 +8,9 @@ namespace ITLang{
     
     public class MainPrg{
         public static void Main(string[] args){
+            #if DEBUG
+            TimeTaken();
+            #elif DEBUG
             if(args.Length == 0){
                 RunTests();
             }else{
@@ -15,6 +18,20 @@ namespace ITLang{
                 string input = File.ReadAllText(fpath);
                 Console.WriteLine(Run(input));
             }
+            #endif
+
+            Console.ReadLine();
+        }
+
+        public const int RUNS = 10000000;
+        public static void TimeTaken(){
+            float startTime = DateTime.Now.Nanosecond;
+
+            for(int i = 0; i < RUNS; i++)
+                RunTests();
+
+            float endTime = DateTime.Now.Nanosecond;
+            Console.WriteLine($"Time taken over {RUNS} runs: {endTime - startTime}");
         }
 
         public static void RunTests(){
@@ -29,8 +46,6 @@ namespace ITLang{
                 string input = File.ReadAllText(path);
                 Run(input);
                 Console.WriteLine();
-                Console.ReadLine();
-                Console.Clear();
             }
         }
 
