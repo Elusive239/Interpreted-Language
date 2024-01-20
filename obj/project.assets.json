@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\noir\\Desktop\\ITLang\\ITLang.csproj",
+      "projectUniqueName": "C:\\Users\\noir\\Desktop\\Github\\Interpreted-Language\\ITLang.csproj",
       "projectName": "ITLang",
-      "projectPath": "C:\\Users\\noir\\Desktop\\ITLang\\ITLang.csproj",
+      "projectPath": "C:\\Users\\noir\\Desktop\\Github\\Interpreted-Language\\ITLang.csproj",
       "packagesPath": "C:\\Users\\noir\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\noir\\Desktop\\ITLang\\obj\\",
+      "outputPath": "C:\\Users\\noir\\Desktop\\Github\\Interpreted-Language\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\noir\\AppData\\Roaming\\NuGet\\NuGet.Config"

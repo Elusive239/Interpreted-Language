@@ -9,7 +9,18 @@ namespace ITLang{
     public class MainPrg{
         public static void Main(string[] args){
             #if DEBUG
-            TimeTaken();
+            double avg = 0;
+            
+            const int tests = 20;
+            List<double> vals = new();
+            for(int i = 0; i < tests; i++){
+                double val = TimeTaken();
+                avg += val;
+                vals.Add(val);
+            }
+            for(int index = 0; index < vals.Count; index++)
+                Console.WriteLine($"Time taken for run {index}: {vals[index]:0.00} seconds.");
+            Console.WriteLine($"Average time over {RUNS} runs: {(avg/tests).ToString("0.00")} seconds.");
             #elif DEBUG
             if(args.Length == 0){
                 RunTests();
@@ -23,16 +34,19 @@ namespace ITLang{
             Console.ReadLine();
         }
 
-        public const int RUNS = 10000000;
-        public static void TimeTaken(){
-            float startTime = DateTime.Now.Nanosecond;
+        #if DEBUG
+        public const int RUNS = 10;
+        public static double TimeTaken(){
+            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+            stopwatch.Start();
 
             for(int i = 0; i < RUNS; i++)
                 RunTests();
 
-            float endTime = DateTime.Now.Nanosecond;
-            Console.WriteLine($"Time taken over {RUNS} runs: {endTime - startTime}");
+            stopwatch.Stop();
+            return stopwatch.Elapsed.TotalSeconds;
         }
+        #endif
 
         public static void RunTests(){
             string[] filePaths = Directory.GetFiles(Directory.GetCurrentDirectory() + "\\Tests", "*.itl");
