@@ -1,4 +1,4 @@
-﻿#define DEBUG
+﻿//#define DEBUG
 
 using ITLang.Frontend;
 using ITLang.Runtime;
@@ -8,20 +8,13 @@ namespace ITLang{
     
     public class MainPrg{
         public static void Main(string[] args){
-            #if DEBUG
-            double avg = 0;
-            
-            const int tests = 20;
-            List<double> vals = new();
-            for(int i = 0; i < tests; i++){
-                double val = TimeTaken();
-                avg += val;
-                vals.Add(val);
-            }
-            for(int index = 0; index < vals.Count; index++)
-                Console.WriteLine($"Time taken for run {index}: {vals[index]:0.00} seconds.");
-            Console.WriteLine($"Average time over {RUNS} runs: {(avg/tests).ToString("0.00")} seconds.");
-            #elif DEBUG
+            // DEBUG
+            FileStream fileStream = new FileStream("./timed.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            StreamWriter writer = new StreamWriter(fileStream);
+            Console.SetOut(writer);
+
+            //SpeedTest();
+
             if(args.Length == 0){
                 RunTests();
             }else{
@@ -29,24 +22,34 @@ namespace ITLang{
                 string input = File.ReadAllText(fpath);
                 Console.WriteLine(Run(input));
             }
-            #endif
 
-            Console.ReadLine();
+            //Console.ReadLine();
+
+            writer.Close();
+            fileStream.Close();
         }
 
-        #if DEBUG
-        public const int RUNS = 10;
-        public static double TimeTaken(){
-            System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
-            stopwatch.Start();
+        public static void SpeedTest(){
+            double avg = 0;
+            
+            const int RUNS = 2000;
+            List<double> vals = new();
+            for(int i = 0; i < RUNS; i++){
+                System.Diagnostics.Stopwatch stopwatch = new System.Diagnostics.Stopwatch();
+                stopwatch.Start();
 
-            for(int i = 0; i < RUNS; i++)
                 RunTests();
 
-            stopwatch.Stop();
-            return stopwatch.Elapsed.TotalSeconds;
+                stopwatch.Stop();
+                double val = stopwatch.Elapsed.TotalSeconds;
+                avg += val;
+                vals.Add(val);
+            }
+            for(int index = 0; index < vals.Count; index++)
+                Console.WriteLine($"Time taken for run {(1+index)*RUNS}: {vals[index]:0.00} seconds.");
+            Console.WriteLine($"Average time over {RUNS} runs: {(avg/RUNS).ToString("0.00")} seconds.");
+            
         }
-        #endif
 
         public static void RunTests(){
             string[] filePaths = Directory.GetFiles(Directory.GetCurrentDirectory() + "\\Tests", "*.itl");

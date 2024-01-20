@@ -19,9 +19,9 @@ namespace ITLang.Util{
         /*
         *   A list of tokens to be iterated over.
         */
-        public TokenStack(Token[] tokens){
-            foreach(Token token in tokens){
-                Add(token);
+        public TokenStack(Span<Token> tokens){
+            for(int i = 0; i < tokens.Length; i++){
+                Add(tokens[i]);
             }
             currentIndex = 0;
         }

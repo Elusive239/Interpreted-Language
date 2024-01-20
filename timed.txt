@@ -1,0 +1,73 @@
+File: C:\Users\noir\Desktop\Github\Interpreted-Language\Tests\test_0.itl
+Hello World!
+Exit Code: 0
+
+File: C:\Users\noir\Desktop\Github\Interpreted-Language\Tests\test_1.itl
+Hello World!
+0
+10
+13.333333
+1013.333333
+23.333332
+Exit Code: 0
+
+File: C:\Users\noir\Desktop\Github\Interpreted-Language\Tests\test_2.itl
+HelloTom!
+HelloJohn!
+HelloBen!
+Exit Code: 0
+
+File: C:\Users\noir\Desktop\Github\Interpreted-Language\Tests\test_3.itl
+10
+Exit Code: 0
+
+File: C:\Users\noir\Desktop\Github\Interpreted-Language\Tests\test_4.itl
+3.14
+Exit Code: 0
+
+File: C:\Users\noir\Desktop\Github\Interpreted-Language\Tests\test_5.itl
+false
+true
+false
+true
+Exit Code: 0
+
+File: C:\Users\noir\Desktop\Github\Interpreted-Language\Tests\test_6.itl
+Time: 4:35:15 pm
+
+350
+
+100 32 object {
+	bar: true
+}
+Hello!
+object {
+	x: 10
+}
+10
+true
+Exit Code: 0
+
+File: C:\Users\noir\Desktop\Github\Interpreted-Language\Tests\test_7.itl
+Exit code: 10 
+
+File: C:\Users\noir\Desktop\Github\Interpreted-Language\Tests\test_8.itl
+===========================
+Expected: true, Got: true
+Expected: false, Got: false
+===========================
+Expected: true, Got: true
+Expected: false, Got: false
+Expected: true, Got: true
+===========================
+Expected: true, Got: true
+Expected: false, Got: false
+Expected: true, Got: true
+Expected: false, Got: false
+Expected: true, Got: true
+Expected: true, Got: true
+===========================
+Expected: true, Got: true
+Expected: false, Got: false
+Exit Code: 0
+

@@ -7,16 +7,16 @@ namespace ITLang.Frontend{
 	public class Parser{
 		private Util.TokenStack tokens;
 		private string sourceCode = "";
-		public Parser(string sourceCode){
-			this.tokens = new TokenStack(Tokenize(sourceCode));
-			this.sourceCode = sourceCode;
+		public Parser(ReadOnlySpan<char> sourceCode){
+			this.tokens = new TokenStack(new Lexer().Tokenize(sourceCode));
+			this.sourceCode = sourceCode.ToString();
 		}
 
 		public void ReParse(string sourceCode){
 			if(this.sourceCode.Equals(sourceCode)){
 				this.tokens.Restart();
 			}else{
-				tokens = new TokenStack(Tokenize(sourceCode));
+				tokens = new TokenStack(new Lexer().Tokenize(sourceCode));
 				this.sourceCode = sourceCode;
 			}
 		}
@@ -34,20 +34,16 @@ namespace ITLang.Frontend{
 
 		// Handle complex statement types
 		private Stmt Parse_Stmt() {
-			// skip to Parse_Expr
-			switch (tokens.At().type) {
-				case TokenType.Let:
-				case TokenType.Const:
-					return this.Parse_Var_Declaration();
-				case TokenType.Fn:
-					return this.Parse_Fn_Declaration();
-				case TokenType.If: //WRITE THIS NOW
-					//throw new Exception("Not yet implemented!");
-					return this.Parse_Branch();
-				default:
-					return this.Parse_Expr();
-			}
-		}
+            // skip to Parse_Expr
+            return tokens.At().type switch
+            {
+                TokenType.Let or TokenType.Const => this.Parse_Var_Declaration(),
+                TokenType.Fn => this.Parse_Fn_Declaration(),
+                //WRITE THIS NOW
+                TokenType.If => this.Parse_Branch(),//throw new Exception("Not yet implemented!");
+                _ => this.Parse_Expr(),
+            };
+        }
 
 		private Stmt Parse_Branch(){
 			Token tk = tokens.Eat();

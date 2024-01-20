@@ -6,33 +6,41 @@
 
 // Represents tokens that our language understands in parsing.
 
+using System.Text;
 using ITLang.Util;
 
 namespace ITLang.Frontend
 {
     // Represents a single token from the source-code.
-    public static class Lexer
+    public class Lexer
     {
-        public static Dictionary<string, TokenType> KEYWORDS = new Dictionary<string, TokenType>{
-            {"let", TokenType.Let},
-            {"const", TokenType.Const},
-            {"func", TokenType.Fn},
-            {"if", TokenType.If},
-            {"elif", TokenType.Elif},
-            {"else", TokenType.Else}
-        };
+        public static bool IsKeyWord(string word, out TokenType tk){
+            tk = word switch {
+                "let" => TokenType.Let,
+                "const" => TokenType.Const,
+                "func" => TokenType.Fn,
+                "if" => TokenType.If,
+                "elif" => TokenType.Elif,
+                "else" => TokenType.Else,
+                _ => tk = TokenType.Number,
+            };
+            return tk != TokenType.Number;
+        }
 
-        private static Dictionary<string, string> ESCAPES = new Dictionary<string, string>{
-            {"n", "\n"},
-            {"r", "\r"},
-            {"t", "\t"},
-            {"v", "\v"},
-            {"f", "\f"},
-            {"0", "\0"},
-            {"\"", "\""},
-            {"\'", "\'"},
-            {"\\", "\\"}
-        };
+        private static char Escape(char escape){
+            return escape switch{
+                'n' => '\n',
+                'r' => '\r',
+                't' => '\t',
+                'v' => '\v',
+                'f' => '\f',
+                '0' => '\0',
+                '\'' => '\'',
+                '\"' => '\'',
+                '\\' => '\\',
+                _ => throw new Exception("How did we get here?")
+            };
+        }
 
         /*
         * Given a string representing source code: Produce tokens and handles
@@ -41,158 +49,161 @@ namespace ITLang.Frontend
         * - Returns a array of tokens.
         * - Does not modify the incoming string.
         */
-        public static Token[] Tokenize(string sourceCode)
+        public Token[] Tokenize(ReadOnlySpan<char> sourceCode)
         {
             TokenListFactory tokenizer = new TokenListFactory(sourceCode);
 
             while (tokenizer.Has())
             {
-                switch (tokenizer.At())
+                switch (tokenizer.At)
                 {
-                    case "(":
+                    case '(':
 
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.OpenParen);
                         break;
-                    case ")":
+                    case ')':
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.CloseParen);
                         break;
-                    case "{":
+                    case '{':
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.OpenBrace);
                         break;
-                    case "}":
+                    case '}':
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.CloseBrace);
                         break;
-                    case "[":
+                    case '[':
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.OpenBracket);
                         break;
-                    case "]":
+                    case ']':
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.CloseBracket);
                         break;
 
-                    case "#":
-                        while (tokenizer.Has() && !tokenizer.At().Equals("\n"))
+                    case '#':
+                        while (tokenizer.Has() && !tokenizer.At.Equals('\n'))
                         {
                             tokenizer.Shift();
                         }
                         tokenizer.Shift();
                         break;
 
-                    case "\"":
-                    case "\'":
-                        bool isQuote = tokenizer.Shift().Equals("\"");
-                        tokenizer.AddToken(isQuote ? "\"" : "\'", isQuote ? TokenType.Quote : TokenType.Apostrophe);
-                        string value = "";
-                        while (tokenizer.Has() && tokenizer.At() != "\"" && tokenizer.At() != "\'")
+                    case '\"':
+                    case '\'':
+                        bool isQuote = tokenizer.Shift().Equals('\'');
+                        tokenizer.AddToken(isQuote ? '\"' : '\'', isQuote ? TokenType.Quote : TokenType.Apostrophe);
+                        StringBuilder stringBuilder = new StringBuilder();
+                        while (tokenizer.Has() && tokenizer.At != '\'' && tokenizer.At != '\"')
                         {
-                            if (tokenizer.At().Equals("\\"))
+                            if (tokenizer.At.Equals('\\'))
                             {
                                 tokenizer.Shift();
-                                value += ESCAPES[tokenizer.Shift()];
+                                stringBuilder.Append (Escape(tokenizer.Shift()));
                                 continue;
                             }
 
-                            value += tokenizer.Shift();
+                            stringBuilder.Append(tokenizer.Shift());
                         }
-                        tokenizer.AddToken(value, TokenType.String);
+                        tokenizer.AddToken(stringBuilder.ToString(), TokenType.String);
                         //End the string
 
-                        if ((tokenizer.At().Equals("\"") && !isQuote) || (tokenizer.At().Equals("\'") && isQuote))
+                        if ((tokenizer.At.Equals('\"') && isQuote) || (tokenizer.At.Equals('\'') && !isQuote))
                         {
-                            throw new Exception($"String does not start with {tokenizer.At()}.");
+                            throw new Exception($"String does not start with {tokenizer.At}.");
                         }
 
                         tokenizer.AddToken(tokenizer.Shift(), isQuote ? TokenType.Quote : TokenType.Apostrophe);
                         break;
 
-                    case "+":
-                    case "-":
-                    case "*":
-                    case "/":
-                    case "%":
-                        string tk = tokenizer.Shift();
+                    case '+':
+                    case '-':
+                    case '*':
+                    case '/':
+                    case '%':
+                    //This is one of the cases that I think we dont need a string builder, 
+                    //because its like just one string creation? i think?
+                        char tk = tokenizer.Shift();
                         //don't wanna bother with the modulo unary operator.
-                        if (!tk.Equals("%") && tokenizer.At().Equals(tk))
+                        if (!tk.Equals('%') && tokenizer.At.Equals(tk))
                         {
-                            tokenizer.AddToken(tk + tokenizer.Shift(), TokenType.UnaryOperator);
+                            tokenizer.AddToken( (tk + "" + tokenizer.Shift()), TokenType.UnaryOperator);
                         }
                         else tokenizer.AddToken(tk, TokenType.BinaryOperator);
                         break;
-                    case ">":
-                    case "<":
-                        string str = tokenizer.Shift();
-                        if (tokenizer.Has() && tokenizer.At().Equals("="))
-                            str += tokenizer.Shift();
-                        tokenizer.AddToken(str, TokenType.BooleanOperator);
+                    case '>':
+                    case '<':
+                    StringBuilder builder = new StringBuilder();
+                    builder.Append(tokenizer.Shift());
+                        if (tokenizer.Has() && tokenizer.At.Equals('='))
+                            builder.Append(tokenizer.Shift());
+                        tokenizer.AddToken(builder.ToString(), TokenType.BooleanOperator);
                         break;
-                    case "=":
+                    case '=':
                         tokenizer.Shift();
-                        if (tokenizer.Has() && tokenizer.At().Equals("="))
+                        if (tokenizer.Has() && tokenizer.At.Equals('='))
                         {
                             tokenizer.Shift();
                             tokenizer.AddToken("==", TokenType.BooleanOperator);
                         }
                         else
                         {
-                            tokenizer.AddToken("=", TokenType.Equals);
+                            tokenizer.AddToken('=', TokenType.Equals);
                         }
                         break;
-                    case "&":
-                    case "|":
-                        bool andOr = tokenizer.Shift().Equals("&");
-                        if (andOr && tokenizer.At().Equals("&"))
+                    case '&':
+                    case '|':
+                        bool andOr = tokenizer.Shift().Equals('&');
+                        if (andOr && tokenizer.At.Equals('&'))
                         {
                             tokenizer.AddToken("&&", TokenType.BooleanOperator);
                         }
-                        else if (!andOr && tokenizer.At().Equals("|"))
+                        else if (!andOr && tokenizer.At.Equals('|'))
                         {
                             tokenizer.AddToken("||", TokenType.BooleanOperator);
                         }
                         else throw new Exception("Expected boolean operator where there was none during lexing.");
                         tokenizer.Shift();
                         break;
-                    case ";":
+                    case ';':
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.Semicolon);
                         break;
-                    case ":":
+                    case ':':
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.Colon);
                         break;
-                    case ",":
+                    case ',':
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.Comma);
                         break;
-                    case ".":
+                    case '.':
                         tokenizer.AddToken(tokenizer.Shift(), TokenType.Dot);
                         break;
 
                     default:
                         if (tokenizer.IsInt())
                         {
-                            string num = "";
+                            StringBuilder numBuilder = new StringBuilder();
                             while (tokenizer.Has() && tokenizer.IsInt())
                             {
-                                num += tokenizer.Shift();
+                                numBuilder.Append (tokenizer.Shift());
                             }
                             // append new numeric token.
-                            tokenizer.AddToken(num, TokenType.Number);
+                            tokenizer.AddToken(numBuilder.ToString(), TokenType.Number);
                         }
                         else if (tokenizer.IsAlpha())
                         {
-                            string ident = "";
+                            StringBuilder identBuilder = new StringBuilder();
                             while (tokenizer.Has() && tokenizer.IsAlpha())
                             {
-                                ident += tokenizer.Shift();
+                                identBuilder.Append (tokenizer.Shift());
                             }
-
+                            string finIdent = identBuilder.ToString();
                             // CHECK FOR RESERVED KEYWORDS
                             // If value is not undefined then the identifier is
                             // a reconized keyword
-                            if (KEYWORDS.ContainsKey(ident))
+                            if (IsKeyWord(finIdent, out TokenType t))
                             {
-                                tokenizer.AddToken(ident, KEYWORDS[ident]);
+                                tokenizer.AddToken(finIdent, t);
                             }
                             else
                             {
                                 // Unreconized name must mean user defined symbol.
-                                tokenizer.AddToken(ident, TokenType.Identifier);
+                                tokenizer.AddToken(finIdent, TokenType.Identifier);
                             }
                         }
                         else if (tokenizer.IsSkippable() || !tokenizer.Has())
@@ -204,7 +215,7 @@ namespace ITLang.Frontend
                             }
                             else
                             {
-                                throw new Exception($"Unrecognized character found in source: {tokenizer.At()} {tokenizer}");
+                                throw new Exception($"Unrecognized character found in source: {tokenizer.At} {tokenizer}");
                             }
                         }
                         break;
