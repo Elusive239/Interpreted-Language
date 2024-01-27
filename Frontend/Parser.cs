@@ -1,14 +1,13 @@
 using ITLang.Util;
-using static ITLang.Frontend.Lexer;
 /**
  * Frontend for producing a valid AST from sourcode
  */
 namespace ITLang.Frontend{
 	public class Parser{
-		private Util.TokenStack tokens;
+		private TokenStack tokens;
 		private string sourceCode = "";
 		public Parser(ReadOnlySpan<char> sourceCode){
-			this.tokens = new TokenStack(new Lexer().Tokenize(sourceCode));
+			this.tokens = new TokenStack(new Lexer(sourceCode).Tokenize());
 			this.sourceCode = sourceCode.ToString();
 		}
 
@@ -16,7 +15,7 @@ namespace ITLang.Frontend{
 			if(this.sourceCode.Equals(sourceCode)){
 				this.tokens.Restart();
 			}else{
-				tokens = new TokenStack(new Lexer().Tokenize(sourceCode));
+				tokens = new TokenStack(new Lexer(sourceCode).Tokenize());
 				this.sourceCode = sourceCode;
 			}
 		}
@@ -41,6 +40,7 @@ namespace ITLang.Frontend{
                 TokenType.Fn => this.Parse_Fn_Declaration(),
                 //WRITE THIS NOW
                 TokenType.If => this.Parse_Branch(),//throw new Exception("Not yet implemented!");
+				TokenType.For or TokenType.While => this.Parse_Loop(),
                 _ => this.Parse_Expr(),
             };
         }
@@ -61,23 +61,7 @@ namespace ITLang.Frontend{
 
 			IfStmt stmt = new IfStmt(new BooleanExpr(true));
 
-			tokens.Expect(
-				TokenType.OpenBrace,
-				"Need open brace in if statement"
-			);
-			
-			List<Stmt> body = new List<Stmt>();
-			while (
-				tokens.At().type != TokenType.EOF &&
-				tokens.At().type != TokenType.CloseBrace
-			) {
-				body.Add(this.Parse_Stmt());
-			}
-
-			tokens.Expect(
-				TokenType.CloseBrace,
-				"Need close brace at end of statement"
-			);
+			List<Stmt> body = Parse_Body();
 
 			stmt.body = body;
 
@@ -101,23 +85,7 @@ namespace ITLang.Frontend{
 				"Need close paren in if statement"
 			);
 
-			tokens.Expect(
-				TokenType.OpenBrace,
-				"Need open brace in if statement"
-			);
-			
-			List<Stmt> body = new List<Stmt>();
-			while (
-				tokens.At().type != TokenType.EOF &&
-				tokens.At().type != TokenType.CloseBrace
-			) {
-				body.Add(this.Parse_Stmt());
-			}
-
-			tokens.Expect(
-				TokenType.CloseBrace,
-				"Need close brace at end of statement"
-			);
+			List<Stmt> body = Parse_Body();
 
 			IfStmt? els = null;
 			if(tokens.At().type == TokenType.Elif || tokens.At().type == TokenType.Else){
@@ -130,6 +98,43 @@ namespace ITLang.Frontend{
 			};
 		}
 
+		private Stmt Parse_Loop(){
+			Token tk = this.tokens.Eat();
+			if(tk.type == TokenType.While){
+				tokens.Expect(TokenType.OpenParen, "");
+				BinaryExpr expr = (BinaryExpr) Parse_Boolean_Expr();
+				tokens.Expect(TokenType.CloseParen, "");
+				return new WhileLoopStmt{
+					boolean = expr,
+					body = Parse_Body()
+				};
+			}
+
+			if(tk.type == TokenType.For){
+				tokens.Expect(TokenType.OpenParen, "");
+
+				Stmt varExpr = Parse_Var_Declaration();
+
+				BinaryExpr expr = (BinaryExpr) Parse_Boolean_Expr();
+
+				tokens.Expect(TokenType.Semicolon, "");
+
+				Expr? unaryExpr = null;
+				if(tokens.At().type == TokenType.Identifier)
+					unaryExpr =  Parse_Expr();
+
+				tokens.Expect(TokenType.CloseParen, "");
+				return new ForLoopStmt{
+					boolean = expr,
+					body = Parse_Body(),
+					defVar = varExpr,
+					unaryOperator = unaryExpr,
+				};
+			}
+
+			throw new Exception("That is a problem!");
+		}
+
 		private Stmt Parse_Fn_Declaration() {
 			tokens.Eat(); // Eat fn keyword
 			string name = tokens.Expect(
@@ -139,7 +144,6 @@ namespace ITLang.Frontend{
 
 			Expr[] args = this.Parse_Args();
 			List<string> parms = new List<string>();
-			//string[] parms = new string[0];
 			foreach (Expr arg in args) {
 				if (arg.kind != NodeType.Identifier) {
 					Console.WriteLine(arg);
@@ -149,11 +153,24 @@ namespace ITLang.Frontend{
                 parms.Add(( (Identifier)arg).symbol);
             }
 
+			List<Stmt> body = Parse_Body();
+
+            FunctionDeclaration fn = new FunctionDeclaration
+            {
+                body = body.ToArray(),
+                name = name,
+                parameters = parms.ToArray()
+            };
+
+            return fn;
+		}
+
+		private List<Stmt> Parse_Body(){
+			List<Stmt> body = new List<Stmt>();
 			tokens.Expect(
 				TokenType.OpenBrace,
 				"Expected function body following declaration"
 			);
-			List<Stmt> body = new List<Stmt>();
 			while (
 				tokens.At().type != TokenType.EOF &&
 				tokens.At().type != TokenType.CloseBrace
@@ -165,12 +182,7 @@ namespace ITLang.Frontend{
 				TokenType.CloseBrace,
 				"Closing brace expected inside function declaration"
 			);
-			FunctionDeclaration fn = new FunctionDeclaration();
-			fn.body = body.ToArray();
-			fn.name = name;
-			fn.parameters = parms.ToArray();
-
-			return fn;
+			return body;
 		}
 
 		// LET IDENT;
@@ -539,7 +551,7 @@ namespace ITLang.Frontend{
 					bool isQuote = tk == TokenType.Quote;
 					tokens.Eat();
 					StringLiteral str = new StringLiteral(tokens.Eat().value);
-					string expected = isQuote ? "\"" : "\'";
+					char expected = isQuote == true ? '\"' : '\'';
 					tokens.Expect(
 						isQuote ? TokenType.Quote : TokenType.Apostrophe,
 						$"Unexpected token found inside string expression. Expected ({expected})"

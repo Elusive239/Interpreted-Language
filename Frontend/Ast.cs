@@ -64,7 +64,24 @@ namespace ITLang.Frontend{
         public IfStmt(Expr expr){
             kind = NodeType.IfStmt;
             this.expr = expr;
-            body = new List<Stmt>();
+            body = new List<Stmt>(1);
+        }
+    }
+
+    public class WhileLoopStmt : Stmt{
+        public Expr? boolean;
+        
+        public List<Stmt>? body;
+        public WhileLoopStmt(){
+            kind = NodeType.WhileStmt;
+        }
+    } 
+
+    public class ForLoopStmt : WhileLoopStmt{
+        public Stmt? defVar;
+        public Expr? unaryOperator;
+        public ForLoopStmt(){
+            kind = NodeType.ForStmt;
         }
     }
 

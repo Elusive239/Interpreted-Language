@@ -76,5 +76,34 @@ namespace ITLang.Runtime.Eval
 
             return returnValue;
         }
+
+        public static RuntimeVal Eval_Loop(WhileLoopStmt whileLoop, Enviornment env){
+            RuntimeVal returnVal = MK_NULL();
+
+            var tmpEnv = new Enviornment(env);
+
+            if(whileLoop.kind == NodeType.ForStmt){
+                ForLoopStmt forLoop = (ForLoopStmt) whileLoop;
+                if(forLoop.defVar != null)
+                    Evaluate(forLoop.defVar, tmpEnv);
+            }
+
+            if(whileLoop.boolean is null || whileLoop.body is null)
+                throw new Exception("Boolean Expression or Body Expected.");
+
+            returnVal = Evaluate(whileLoop.boolean, tmpEnv);
+            while(((BooleanVal) returnVal).value){
+                foreach(Stmt stmt in whileLoop.body){
+                    Evaluate(stmt, tmpEnv);
+                }
+                if(whileLoop.kind == NodeType.ForStmt){
+                    ForLoopStmt forLoop = (ForLoopStmt) whileLoop;
+                    if(forLoop.unaryOperator != null)
+                        Evaluate(forLoop.unaryOperator, tmpEnv);
+                }
+                returnVal = Evaluate(whileLoop.boolean, tmpEnv);
+            }
+            return returnVal;
+        }
     }
 }

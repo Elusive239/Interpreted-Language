@@ -25,6 +25,7 @@ namespace ITLang.Runtime
                 NodeType.BooleanExpr => new BooleanVal(((BooleanExpr)astNode).value),
                 NodeType.IfStmt => Eval_If_Expr((IfStmt)astNode, env),
                 NodeType.UnaryExpr => Eval_Unary_Expr((UnaryExpr)astNode, env ),
+                NodeType.WhileStmt or NodeType.ForStmt => Eval_Loop((WhileLoopStmt) astNode, env),
                 _ => throw new Exception($"This AST Node ({astNode.kind.Stringify()}) has not yet been setup for interpretation."),
             };
         }

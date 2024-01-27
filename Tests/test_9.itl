@@ -17,8 +17,9 @@ println(x)
 #to implement a while loop, we need to do two things:
     #we need to evaluate the boolean expression in the while loop
     #then execute each stmt in the body of the loop, until the expression is false.
-while(x < 10){
-    print(x)
+println("While loop")
+while(x <= 10){
+    println("Count: ",x)
     x++
 }
 
@@ -29,3 +30,7 @@ while(x < 10){
         #and then we evaluate a boolean expression,
         #then evaluate a unary opertion at the end for the {}
     #and we need an environment for every variable defined in the for loops {}
+println("For loop")
+for(let y = 0; y <= 10; y++){
+    println("Count: ", y)
+}

@@ -13,6 +13,8 @@ namespace ITLang.Frontend
         If, 
         Elif, 
         Else, 
+        For,
+        While,
 
         // Grouping * Operators
         BinaryOperator,

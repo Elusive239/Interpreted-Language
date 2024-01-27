@@ -13,6 +13,8 @@ namespace ITLang.Frontend
         MemberExpr,
         CallExpr,
         IfStmt,    
+        WhileStmt,
+        ForStmt,
         BooleanExpr,    
         UnaryExpr,
         BinaryExpr,

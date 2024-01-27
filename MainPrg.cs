@@ -9,7 +9,7 @@ namespace ITLang{
     public class MainPrg{
         public static void Main(string[] args){
             // DEBUG
-            FileStream fileStream = new FileStream("./timed.txt", FileMode.OpenOrCreate, FileAccess.Write);
+            FileStream fileStream = new FileStream("./timed.txt", FileMode.Truncate, FileAccess.Write);
             StreamWriter writer = new StreamWriter(fileStream);
             Console.SetOut(writer);
 
@@ -84,7 +84,11 @@ namespace ITLang{
             }catch(ExitException e){
                 Console.WriteLine(e.Message);
                 return e.exitCode;
-            }
+            } 
+            // catch{
+            //     Console.WriteLine("Exit Code: -1");
+            //     return -1;
+            // }
         }
     }
 }
