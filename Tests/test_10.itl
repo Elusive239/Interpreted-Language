@@ -1,0 +1,13 @@
+func Test(arg)
+    println(arg, " worked!")
+Test("Func")
+
+if(true)
+    Test("If")
+
+let x = 0;
+
+if(x == 1)
+    Exit(1)
+else
+    Test("Else")

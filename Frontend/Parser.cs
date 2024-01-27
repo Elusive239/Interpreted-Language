@@ -62,7 +62,7 @@ namespace ITLang.Frontend{
 			IfStmt stmt = new IfStmt(new BooleanExpr(true));
 
 			List<Stmt> body = Parse_Body();
-
+			stmt.expr = new BooleanExpr(); //defaults to true
 			stmt.body = body;
 
 			return stmt;
@@ -167,7 +167,12 @@ namespace ITLang.Frontend{
 
 		private List<Stmt> Parse_Body(){
 			List<Stmt> body = new List<Stmt>();
-			tokens.Expect(
+
+			if(tokens.At().type != TokenType.OpenBrace){
+				body.Add(this.Parse_Stmt());
+				return body;
+			}
+			else tokens.Expect(
 				TokenType.OpenBrace,
 				"Expected function body following declaration"
 			);

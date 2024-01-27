@@ -66,7 +66,7 @@ namespace ITLang.Runtime.Eval
             if(ifExpr.expr != null){
                 isTrue = (BooleanVal) Evaluate(ifExpr.expr, tmpEnv);
             }
-            if(isTrue.value){
+            if(isTrue.value ){
                 foreach(Stmt stmt in ifExpr.body){
                     returnValue = Evaluate(stmt, tmpEnv);
                 }

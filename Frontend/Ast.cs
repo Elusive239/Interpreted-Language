@@ -204,6 +204,7 @@ namespace ITLang.Frontend{
         public bool value;
         public BooleanExpr(bool value = true){
             kind = NodeType.BooleanExpr;
+            this.value = value;
         }
     }
 
