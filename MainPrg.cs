@@ -23,7 +23,6 @@ namespace ITLang{
                 Console.WriteLine(Run(input));
             }
 
-            Console.ReadLine();
 
             writer.Close();
             fileStream.Close();
