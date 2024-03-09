@@ -1,24 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\noir\\Desktop\\Github\\Interpreted-Language\\ITLang.csproj": {}
+    "C:\\Users\\thoma\\Desktop\\Interpreted-Language\\ITLang.csproj": {}
   },
   "projects": {
-    "C:\\Users\\noir\\Desktop\\Github\\Interpreted-Language\\ITLang.csproj": {
+    "C:\\Users\\thoma\\Desktop\\Interpreted-Language\\ITLang.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\noir\\Desktop\\Github\\Interpreted-Language\\ITLang.csproj",
+        "projectUniqueName": "C:\\Users\\thoma\\Desktop\\Interpreted-Language\\ITLang.csproj",
         "projectName": "ITLang",
-        "projectPath": "C:\\Users\\noir\\Desktop\\Github\\Interpreted-Language\\ITLang.csproj",
-        "packagesPath": "C:\\Users\\noir\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\noir\\Desktop\\Github\\Interpreted-Language\\obj\\",
+        "projectPath": "C:\\Users\\thoma\\Desktop\\Interpreted-Language\\ITLang.csproj",
+        "packagesPath": "C:\\Users\\thoma\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\thoma\\Desktop\\Interpreted-Language\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\noir\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\thoma\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net7.0"
         ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {},
+          "https://packages.stride3d.net/nuget": {}
+        },
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
@@ -29,6 +33,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -50,7 +59,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "c:\\program files\\dotnet\\sdk\\8.0.201\\RuntimeIdentifierGraph.json"
         }
       }
     }

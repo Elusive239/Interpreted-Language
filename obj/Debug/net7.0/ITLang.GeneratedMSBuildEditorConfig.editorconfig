@@ -8,4 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = ITLang
-build_property.ProjectDir = C:\Users\noir\Desktop\Github\Interpreted-Language\
+build_property.ProjectDir = C:\Users\thoma\Desktop\Interpreted-Language\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
