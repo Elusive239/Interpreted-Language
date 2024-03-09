@@ -218,6 +218,20 @@ namespace ITLang.Frontend{
         }
     }
 
+    // LITERAL / PRIMARY EXPRESSION TYPES
+    /*
+    * Represents a user-defined variable or symbol in source.
+    */
+    public class ClassLiteral : Expr{
+        Expr identifier;
+        List<Stmt> contents;
+        public ClassLiteral(Expr identifier, List<Stmt> contents){
+            kind = NodeType.ClassLiteral;
+            this.identifier = identifier;
+            this.contents = contents;
+        }
+    }
+
     /*
     *   Represents a property to be used inside object literals.
     */

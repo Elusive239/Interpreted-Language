@@ -33,6 +33,7 @@ namespace ITLang.Frontend
                 "else" => TokenType.Else,
                 "for" => TokenType.For,
                 "while" => TokenType.While,
+                "class" => TokenType.Class,
                 _ => tk = TokenType.Number,
             };
             return tk != TokenType.Number;

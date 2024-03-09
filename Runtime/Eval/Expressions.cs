@@ -97,11 +97,14 @@ namespace ITLang.Runtime.Eval
             switch(op){
                 case "==":
                 //if they have a different amount of properties there is no point in checking further.
-                if(lhs.properties.Count != rhs.properties.Count){
+                if(lhs.iTObject.Variables.Count != rhs.iTObject.Variables.Count){
                     break;
                 }
+
+                
+
                 //compare the properties of the objects, if they match then they are probably equal.
-                returnVal = MK_BOOL(lhs.properties.Equals(rhs.properties));
+                returnVal = MK_BOOL(lhs.iTObject.Equals(rhs.iTObject));
                 break;
                 default: throw new Exception($"Can't evaluate these values with operator {op}.");
             }
@@ -256,8 +259,7 @@ namespace ITLang.Runtime.Eval
             {
                 RuntimeVal runtimeVal =
                     prop.value == null ? env.lookupVar(prop.key) : Evaluate(prop.value, env);
-
-                tmp.properties.Add(prop.key, runtimeVal);
+                tmp.iTObject.AssignVar(prop.key, runtimeVal);
             }
 
             return tmp;
@@ -276,7 +278,8 @@ namespace ITLang.Runtime.Eval
 
                 Identifier property = (Identifier)expr.property;
                 val = (ObjectVal) Evaluate(expr.obj, env);
-                return ((ObjectVal)val).properties[property.symbol];
+
+                return ((ObjectVal)val).iTObject.lookupVar(property.symbol);
             }
 
             return val;

@@ -15,6 +15,7 @@ namespace ITLang.Frontend
         Else, 
         For,
         While,
+        Class,
 
         // Grouping * Operators
         BinaryOperator,

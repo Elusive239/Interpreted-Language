@@ -60,10 +60,19 @@ namespace ITLang.Runtime
 	*/
 	public class ObjectVal : RuntimeVal
 	{
-		public Dictionary<string, RuntimeVal> properties;
+		//public Dictionary<string, RuntimeVal> properties;
+		public ITObject iTObject;
 		public ObjectVal()
 		{
-			properties = new Dictionary<string, RuntimeVal>();
+			//properties = new Dictionary<string, RuntimeVal>();
+			iTObject = new ITObject();
+			type = ValueType.OBJECT;
+		}
+
+		public ObjectVal(ITObject other)
+		{
+			//properties = new Dictionary<string, RuntimeVal>();
+			iTObject = other.Clone();
 			type = ValueType.OBJECT;
 		}
 	}

@@ -105,5 +105,16 @@ namespace ITLang.Runtime.Eval
             }
             return returnVal;
         }
+
+        public static RuntimeVal Eval_Class_Expr(ClassLiteral classLiteral, Enviornment env){
+            //check with the identifier and see if this class has been defined before
+                //if it has, fail
+                //otherwise keep going
+            //create new ITObject
+            //iterate over each expression, using the object val as a environment
+            
+            //return new object value that holds that ITOBject
+            return null;
+        }
     }
 }

@@ -9,7 +9,7 @@ namespace ITLang.Runtime.NativeFunctions
             Add("print", PrintFunction);
             Add("println", PrintLNFunction);
             Add("exit", ExitFunction);
-            Add("time", TimeFunction);
+            //Add("time", TimeFunction);
         }
         private RuntimeVal PrintFunction(RuntimeVal[] _args, Enviornment _env){
             string toPrint = "";
@@ -29,22 +29,22 @@ namespace ITLang.Runtime.NativeFunctions
             return Runtime.Values.MK_NULL() ?? throw new Exception("Null is... null?");
         }
 
-        private RuntimeVal TimeFunction(RuntimeVal[] _args, Enviornment _env) {
-            var CurDate= DateTime.Now;
+        // private RuntimeVal TimeFunction(RuntimeVal[] _args, Enviornment _env) {
+        //     var CurDate= DateTime.Now;
 
-            ObjectLiteral obj = new ObjectLiteral()
-            .AddProperty("hour", new NumericLiteral(CurDate.Hour))
-            .AddProperty("minute", new NumericLiteral(CurDate.Minute))
-            .AddProperty("second", new NumericLiteral(CurDate.Second))
-            .AddProperty("milisecond", new NumericLiteral(CurDate.Millisecond))
-            .AddProperty("microsecond", new NumericLiteral(CurDate.Microsecond))
-            .AddProperty("day", new NumericLiteral(CurDate.Day))
-            .AddProperty("month", new NumericLiteral(CurDate.Month))
-            .AddProperty("year", new NumericLiteral(CurDate.Year));
+        //     ObjectLiteral obj = new ObjectLiteral()
+        //     .AddProperty("hour", new NumericLiteral(CurDate.Hour))
+        //     .AddProperty("minute", new NumericLiteral(CurDate.Minute))
+        //     .AddProperty("second", new NumericLiteral(CurDate.Second))
+        //     .AddProperty("milisecond", new NumericLiteral(CurDate.Millisecond))
+        //     .AddProperty("microsecond", new NumericLiteral(CurDate.Microsecond))
+        //     .AddProperty("day", new NumericLiteral(CurDate.Day))
+        //     .AddProperty("month", new NumericLiteral(CurDate.Month))
+        //     .AddProperty("year", new NumericLiteral(CurDate.Year));
 
-            _env.DeclareVar("timeObj", Eval.Expressions.Eval_Object_Expr(obj, _env), true);
-            return _env.lookupVar("timeObj");
-        }
+        //     _env.DeclareVar("timeObj", Eval.Expressions.Eval_Object_Expr(obj, _env), true);
+        //     return _env.lookupVar("timeObj");
+        // }
 
         private RuntimeVal ExitFunction(RuntimeVal[] _args, Enviornment _env){
             

@@ -57,7 +57,7 @@ namespace ITLang.Util{
 				case Runtime.ValueType.OBJECT: 
 				ObjectVal v = (ObjectVal) val;
 					tmp += "object {";
-					foreach (var prop in v.properties){
+					foreach (var prop in v.iTObject.Variables){
 						tmp += $"\n\t{prop.Key}: {Stringify(prop.Value)}";
 					}
 					tmp += "\n}";

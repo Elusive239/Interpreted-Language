@@ -528,6 +528,20 @@ namespace ITLang.Frontend{
                     };
                     return identifier;
 
+				case TokenType.Class:
+				tokens.Eat();
+				Token ident = tokens.Eat();
+				List<Stmt> body = Parse_Body();
+
+				ClassLiteral lit = new ClassLiteral(
+					new Identifier
+                    {
+                        symbol = ident.value
+                    },
+					body
+				);
+				return lit;
+
 				// Constants and Numeric Constants
 				case TokenType.Number:
                     NumericLiteral numericLiteral = new NumericLiteral

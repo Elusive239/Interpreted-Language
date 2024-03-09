@@ -23,6 +23,7 @@ namespace ITLang.Frontend
         ObjectLiteral,
         NumericLiteral,
         StringLiteral,
+        ClassLiteral,
         Identifier
     }
 }

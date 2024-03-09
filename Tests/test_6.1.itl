@@ -1,0 +1,11 @@
+class Hello{
+    let x = 0;
+    let y = "5ive";
+    func hi(){
+        println("Hi!")
+    }
+} 
+
+
+let obj = Hello();
+println(obj)
